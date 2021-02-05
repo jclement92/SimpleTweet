@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -22,6 +23,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     private static final String TAG = "TimelineActivity";
 
+    private SwipeRefreshLayout swipeContainer;
     TwitterClient client;
     RecyclerView rvTweets;
     TweetsAdapter adapter;
@@ -33,6 +35,21 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         client = TwitterApp.getRestClient(this);
+
+        swipeContainer = findViewById(R.id.swipeContainer);
+
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                populateHomeTimeline();
+            }
+        });
 
         rvTweets = findViewById(R.id.rvTweets);
 
@@ -52,8 +69,13 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "onSuccess! " + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
-                    tweets.addAll(Tweet.fromJsonArray(jsonArray));
+                    adapter.clear();
+                    adapter.addAll(Tweet.fromJsonArray(jsonArray));
                     adapter.notifyDataSetChanged();
+
+                    // Call setRefreshing(false) to signal refresh has finished
+                    swipeContainer.setRefreshing(false);
+                    Log.i(TAG, "Swipe refresh successful!");
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception", e);
                 }
