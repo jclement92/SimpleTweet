@@ -62,7 +62,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
             tvScreenName.setText(tweet.user.screenName);
-            tvCreatedAt.setText(" \u2022 " + Tweet.getFormattedTimestamp(tweet.createdAt));
+            tvCreatedAt.setText(" \u2022 " + tweet.getFormattedTimestamp(tweet.createdAt));
 
             Glide
                     .with(context)
