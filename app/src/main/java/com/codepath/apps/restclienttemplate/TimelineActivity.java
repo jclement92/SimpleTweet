@@ -72,12 +72,12 @@ public class TimelineActivity extends AppCompatActivity {
                     adapter.clear();
                     adapter.addAll(Tweet.fromJsonArray(jsonArray));
                     adapter.notifyDataSetChanged();
-
-                    // Call setRefreshing(false) to signal refresh has finished
-                    swipeContainer.setRefreshing(false);
                     Log.i(TAG, "Swipe refresh successful!");
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception", e);
+                } finally {
+                    // Call setRefreshing(false) to signal refresh has finished
+                    swipeContainer.setRefreshing(false);
                 }
             }
 
