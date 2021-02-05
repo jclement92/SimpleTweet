@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import androidx.appcompat.widget.Toolbar;
+
 import com.codepath.apps.restclienttemplate.models.SampleModel;
 import com.codepath.apps.restclienttemplate.models.SampleModelDao;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
@@ -19,6 +21,12 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+
+		// Find the toolbar view inside the activity layout
+		Toolbar toolbar = findViewById(R.id.toolbar);
+		// Sets the Toolbar to act as the ActionBar for this Activity window.
+		// Make sure the toolbar exists in the activity and is not null
+		setSupportActionBar(toolbar);
 
 		final SampleModel sampleModel = new SampleModel();
 		sampleModel.setName("CodePath");
