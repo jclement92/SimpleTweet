@@ -24,6 +24,7 @@ public class TimelineActivity extends AppCompatActivity {
     private static final String TAG = "TimelineActivity";
 
     private SwipeRefreshLayout swipeContainer;
+    private EndlessRecyclerViewScrollListener scrollListener;
     TwitterClient client;
     RecyclerView rvTweets;
     TweetsAdapter adapter;
@@ -52,13 +53,53 @@ public class TimelineActivity extends AppCompatActivity {
         });
 
         rvTweets = findViewById(R.id.rvTweets);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, tweets);
 
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        rvTweets.setLayoutManager(linearLayoutManager);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i(TAG, "onLoadMore: " + page);
+                loadMoreData();
+            }
+        };
+
+        // Adds the scroll listener to RecyclerView
+        rvTweets.addOnScrollListener(scrollListener);
+
         rvTweets.setAdapter(adapter);
         populateHomeTimeline();
+
+    }
+
+    private void loadMoreData() {
+        // 1. Send an API request to retrieve appropriate paginated data
+        client.getNextPageOfTweets(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.i(TAG, "onSuccess for loadMoreData! " + json.toString());
+                // 2. Deserialize and construct new model objects from the API response
+                JSONArray jsonArray = json.jsonArray;
+                try {
+                    List<Tweet> tweets = Tweet.fromJsonArray(jsonArray);
+                    // 3. Append the new data objects to the existing set of items inside the array of items
+                    // 4. Notify the adapter of the new items made with `notifyItemRangeInserted()`
+                    adapter.addAll(tweets);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Log.e(TAG, "onFailure for loadMoreData!", throwable);
+            }
+            // Getting the last id
+        }, tweets.get(tweets.size()-1).id);
 
     }
 
