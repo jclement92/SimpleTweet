@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -56,6 +57,7 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 populateHomeTimeline();
+                Toast.makeText(TimelineActivity.this, "Refreshing completed.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -73,6 +75,7 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.i(TAG, "onLoadMore: " + page);
+                Toast.makeText(TimelineActivity.this, "Loading the next 25 Tweets...", Toast.LENGTH_SHORT).show();
                 loadMoreData();
             }
         };
@@ -134,6 +137,7 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "onFailure!", throwable);
+                Toast.makeText(TimelineActivity.this, "Too many requests have been made!! Please wait 15 minutes.", Toast.LENGTH_SHORT).show();
             }
         });
     }
