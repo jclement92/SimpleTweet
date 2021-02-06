@@ -48,6 +48,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         ImageView ivProfileImage;
         TextView tvBody;
+        TextView tvName;
         TextView tvScreenName;
         TextView tvCreatedAt;
 
@@ -55,14 +56,16 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvBody = itemView.findViewById(R.id.tvBody);
+            tvName = itemView.findViewById(R.id.tvName);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
         }
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
-            tvScreenName.setText(tweet.user.screenName);
-            tvCreatedAt.setText(" \u2022 " + tweet.getFormattedTimestamp(tweet.createdAt));
+            tvName.setText(tweet.user.name);
+            tvScreenName.setText(context.getString(R.string.username_text, tweet.user.screenName));
+            tvCreatedAt.setText(context.getString(R.string.time_text, tweet.getFormattedTimestamp(tweet.createdAt)));
 
             Glide
                     .with(context)

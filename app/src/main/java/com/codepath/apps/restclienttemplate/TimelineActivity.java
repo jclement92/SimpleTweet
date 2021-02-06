@@ -26,7 +26,6 @@ public class TimelineActivity extends AppCompatActivity {
     private static final String TAG = "TimelineActivity";
 
     private SwipeRefreshLayout swipeContainer;
-    private EndlessRecyclerViewScrollListener scrollListener;
     TwitterClient client;
     RecyclerView rvTweets;
     TweetsAdapter adapter;
@@ -48,7 +47,7 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer = findViewById(R.id.swipeContainer);
 
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        swipeContainer.setColorSchemeResources(R.color.twitter_blue,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -69,7 +68,8 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        EndlessRecyclerViewScrollListener scrollListener =
+                new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.i(TAG, "onLoadMore: " + page);
