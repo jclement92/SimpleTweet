@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:hintEnabled="false"
         app:counterEnabled="true"
-        app:counterMaxLength="140">
+        app:counterMaxLength="280">
 
         <EditText
             android:id="@+id/etCompose"

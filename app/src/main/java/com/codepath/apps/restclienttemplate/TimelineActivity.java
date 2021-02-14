@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +36,7 @@ public class TimelineActivity extends AppCompatActivity {
     private final int REQUEST_CODE = 20;
 
     private SwipeRefreshLayout swipeContainer;
+    private FloatingActionButton fabCompose;
     TwitterClient client;
     RecyclerView rvTweets;
     TweetsAdapter adapter;
@@ -53,6 +54,16 @@ public class TimelineActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         client = TwitterApp.getRestClient(this);
+
+        fabCompose = findViewById(R.id.fabCompose);
+
+        fabCompose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
 
         swipeContainer = findViewById(R.id.swipeContainer);
 
@@ -104,18 +115,18 @@ public class TimelineActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.compose) {
-            // Compose icon has been selected
-            Toast.makeText(this, "Compose!", Toast.LENGTH_SHORT).show();
-            // Navigate to the compose activity
-            Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        if (item.getItemId() == R.id.compose) {
+//            // Compose icon has been selected
+//            Toast.makeText(this, "Compose!", Toast.LENGTH_SHORT).show();
+//            // Navigate to the compose activity
+//            Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
+//            startActivityForResult(intent, REQUEST_CODE);
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
