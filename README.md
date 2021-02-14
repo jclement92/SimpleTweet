@@ -2,9 +2,42 @@
 
 **Twitter Client** is an android app that allows a user to view his Twitter timeline. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
+Time spent: **5** hours spent in total
+
+## Twitter Client Part 2
+
+### User Stories
+
+The following **required** functionality is completed:
+
+- [X] User can **compose and post a new tweet**
+  - [X] User can click a “Compose” icon in the Action Bar on the top right
+  - [X] User can then enter a new tweet and post this to Twitter
+  - [X] User is taken back to home timeline with **new tweet visible** in timeline
+  - [X] Newly created tweet should be manually inserted into the timeline and not rely on a full refresh
+  - [X] User can **see a counter with total number of characters left for tweet** on compose tweet page
+
+The following **optional** features are implemented:
+
+- [X] User is using **"Twitter branded" colors and styles**
+- [X] User can click links in tweets launch the web browser 
+- [ ] User can **select "reply" from detail view to respond to a tweet**
+- [X] The "Compose" action is moved to a FloatingActionButton instead of on the AppBar
+- [ ] Compose tweet functionality is build using modal overlay
+- [X] Use Parcelable instead of Serializable using the popular [Parceler library](http://guides.codepath.org/android/Using-Parceler).
+- [ ] User can **open the twitter app offline and see last loaded tweets**. Persisted in SQLite tweets are refreshed on every application launch. While "live data" is displayed when app can get it from Twitter API, it is also saved for use in offline mode.
+- [ ] When a user leaves the compose view without publishing and there is existing text, prompt to save or delete the draft. If saved, the draft should then be **persisted to disk** and can later be resumed from the compose view.
+- [ ] Enable your app to receive implicit intents from other apps. When a link is shared from a web browser, it should pre-fill the text and title of the web page when composing a tweet. 
+
+The following **additional** features are implemented:
+
+- [ ] List anything else that you can get done to improve the app functionality!
+
+## Twitter Client Part 1
+
 Time spent: **12** hours spent in total
 
-## User Stories
+### User Stories
 
 The following **required** functionality is completed:
 
@@ -29,19 +62,17 @@ The following **additional** features are implemented:
 
 - [ ] List anything else that you can get done to improve the app functionality!
 
-## Video Walkthrough
+### Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
 <img src='video-walkthrough.gif' title='Video Walkthrough' height='650px' width='' alt='Video Walkthrough' />
 
-Coming soon!
-
-## Notes
+### Notes
 
 Describe any challenges encountered while building the app.
 
-## Open-source libraries used
+### Open-source libraries used
 
 - [scribe-java](https://github.com/fernandezpablo85/scribe-java) - Simple OAuth library for handling the authentication flow.
 - [Android Async HTTP](https://github.com/codepath/CPAsyncHttpClient) - Simple asynchronous HTTP requests with JSON parsing
@@ -49,7 +80,7 @@ Describe any challenges encountered while building the app.
 - [Glide](https://github.com/bumptech/glide) - Image loading and caching library for Android
 - [Room](https://developer.android.com/training/data-storage/room/index.html) - Simple ORM for persisting a local SQLite database on the Android device
 
-## License
+### License
 
     Copyright 2021 Christopher Clement
 
