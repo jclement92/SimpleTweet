@@ -1,7 +1,10 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.parceler.Parcels;
@@ -25,6 +29,7 @@ public class ComposeActivity extends AppCompatActivity {
 
     EditText etCompose;
     Button btnTweet;
+    TextInputLayout tilCompose;
 
     TwitterClient client;
 
@@ -35,6 +40,24 @@ public class ComposeActivity extends AppCompatActivity {
 
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
+        tilCompose = findViewById(R.id.tilCompose);
+
+        etCompose.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                btnTweet.setEnabled(etCompose.length() != 0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         client = TwitterApp.getRestClient(this);
 
@@ -78,6 +101,23 @@ public class ComposeActivity extends AppCompatActivity {
                 });
             }
         });
+
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+
+                // Make sure to check whether returned data will be null.
+                String titleOfPage = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+                String urlOfPage = intent.getStringExtra(Intent.EXTRA_TEXT);
+                Uri imageUriOfPage = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+                etCompose.setText(urlOfPage);
+            }
+        }
 
     }
 }
