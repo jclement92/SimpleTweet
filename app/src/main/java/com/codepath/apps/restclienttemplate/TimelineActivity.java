@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.TweetDao;
+import com.codepath.apps.restclienttemplate.models.TweetWithUser;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -37,6 +41,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeContainer;
     private FloatingActionButton fabCompose;
+    TweetDao tweetDao;
     TwitterClient client;
     RecyclerView rvTweets;
     TweetsAdapter adapter;
@@ -54,6 +59,7 @@ public class TimelineActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         client = TwitterApp.getRestClient(this);
+        tweetDao = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
 
         fabCompose = findViewById(R.id.fabCompose);
 
@@ -104,6 +110,22 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.addOnScrollListener(scrollListener);
 
         rvTweets.setAdapter(adapter);
+
+        // Query for existing tweets in the DB
+        // This should happen on a background thread, not the main (UI) thread
+        // Otherwise, an illegal state exception will occur
+        // IE using AsyncTask (Android native), standard Java threads, or Kotlin coroutines.
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "Showing data from database");
+                List<TweetWithUser> tweetWithUsers = tweetDao.recentItems();
+                List<Tweet> tweetsFromDB = TweetWithUser.getTweetList(tweetWithUsers);
+                adapter.clear();
+                adapter.addAll(tweetsFromDB);
+            }
+        });
+
         populateHomeTimeline();
 
     }
@@ -181,9 +203,22 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "onSuccess! " + json.toString());
                 JSONArray jsonArray = json.jsonArray;
                 try {
+                    final List<Tweet> tweetsFromNetwork = Tweet.fromJsonArray(jsonArray);
                     adapter.clear();
-                    adapter.addAll(Tweet.fromJsonArray(jsonArray));
-                    adapter.notifyDataSetChanged();
+                    adapter.addAll(tweetsFromNetwork);
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.i(TAG, "Saving data into the database");
+
+
+                            // Insert users first
+                            List<User> usersFromNetwork = User.fromJsonTweetArray(tweetsFromNetwork);
+                            tweetDao.insertModel(usersFromNetwork.toArray(new User[0]));
+                            // Insert tweets next
+                            tweetDao.insertModel(tweetsFromNetwork.toArray(new Tweet[0]));
+                        }
+                    });
                     Log.i(TAG, "Swipe refresh successful!");
                 } catch (JSONException e) {
                     Log.e(TAG, "Json exception", e);
@@ -195,8 +230,7 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG, "onFailure!", throwable);
-                Toast.makeText(TimelineActivity.this, "Too many requests have been made!! Please wait 15 minutes.", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "onFailure! Too many requests have been made. Please wait 15 minutes!", throwable);
             }
         });
     }
