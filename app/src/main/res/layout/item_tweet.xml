@@ -22,7 +22,7 @@
         android:layout_toEndOf="@id/ivProfileImage"
         android:textColor="@android:color/black"
         android:textStyle="bold"
-        tools:text="First Last"/>
+        tools:text="First Last" />
 
     <TextView
         android:id="@+id/tvScreenName"

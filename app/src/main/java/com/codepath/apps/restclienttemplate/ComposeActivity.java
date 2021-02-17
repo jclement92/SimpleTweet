@@ -1,7 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -19,6 +19,10 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 import org.parceler.Parcels;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import okhttp3.Headers;
 
@@ -33,10 +37,14 @@ public class ComposeActivity extends AppCompatActivity {
 
     TwitterClient client;
 
+    FragmentManager fm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
+
+        fm = getSupportFragmentManager();
 
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
@@ -50,7 +58,7 @@ public class ComposeActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                btnTweet.setEnabled(etCompose.length() != 0);
+                btnTweet.setEnabled(etCompose.length() != 0 && etCompose.length() <= 140);
             }
 
             @Override
@@ -111,13 +119,38 @@ public class ComposeActivity extends AppCompatActivity {
             if ("text/plain".equals(type)) {
 
                 // Make sure to check whether returned data will be null.
-                String titleOfPage = intent.getStringExtra(Intent.EXTRA_SUBJECT);
                 String urlOfPage = intent.getStringExtra(Intent.EXTRA_TEXT);
-                Uri imageUriOfPage = intent.getParcelableExtra(Intent.EXTRA_STREAM);
 
                 etCompose.setText(urlOfPage);
             }
         }
 
+        BufferedReader input;
+        try {
+            input = new BufferedReader(new InputStreamReader(openFileInput("filename.txt")));
+            String line;
+            StringBuilder builder = new StringBuilder();
+            while ((line = input.readLine()) != null) {
+                builder.append(line).append("\n");
+            }
+            String text = builder.toString();
+            etCompose.setText(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (btnTweet.isEnabled()) {
+            showAlertDialog();
+        } else {
+            finish();
+        }
+    }
+
+    private void showAlertDialog() {
+        SaveTweetFragment alertDialog = SaveTweetFragment.newInstance("Save draft?", etCompose.getText().toString());
+        alertDialog.show(fm, "fragment_alert");
     }
 }
