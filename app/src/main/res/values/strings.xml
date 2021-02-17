@@ -10,5 +10,7 @@
 
     <string name="username_text">\@%1$s</string>
     <string name="time_text">\u0020• %1$s</string>
+    <string name="tweet">Tweet</string>
+    <string name="whats_happening">What\'s happening?</string>
 
 </resources>

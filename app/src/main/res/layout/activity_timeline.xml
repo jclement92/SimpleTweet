@@ -39,7 +39,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabCompose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
@@ -48,6 +48,6 @@
         android:clickable="true"
         android:contentDescription="@string/compose"
         android:focusable="true"
-        android:src="@drawable/ic_baseline_add_24" />
+        android:src="@android:drawable/ic_menu_edit" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
