@@ -62,13 +62,15 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [ ] List anything else that you can get done to improve the app functionality!
+- [X] Tweet button is enabled/disabled depending on ComposeActivity EditText content
 
 ### Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
 <img src='video-walkthrough.gif' title='Video Walkthrough' height='650px' width='' alt='Video Walkthrough' />
+
+Coming soon!
 
 ### Notes
 
