@@ -67,7 +67,9 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='video-walkthrough.gif' title='Video Walkthrough' height='650px' width='' alt='Video Walkthrough' />
+<img src='twitter.gif' title='Video Walkthrough' height='650px' width='' alt='Video Walkthrough 1' />
+<img src='twitter2.gif' title='Video Walkthrough' height='650px' width='' alt='Video Walkthrough 2' />
+<img src='twitter3.gif' title='Video Walkthrough' height='650px' width='' alt='Video Walkthrough 3' />
 
 Coming soon!
 
