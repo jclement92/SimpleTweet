@@ -71,8 +71,6 @@ Here's a walkthrough of implemented user stories:
 <img src='twitter2.gif' title='Video Walkthrough' height='650px' width='' alt='Video Walkthrough 2' />
 <img src='twitter3.gif' title='Video Walkthrough' height='650px' width='' alt='Video Walkthrough 3' />
 
-Coming soon!
-
 ### Notes
 
 Describe any challenges encountered while building the app.
