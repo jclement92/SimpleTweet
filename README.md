@@ -2,11 +2,11 @@
 
 **Twitter Client** is an android app that allows a user to view his Twitter timeline. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
-Total time spent: **18** hours spent in total
+Total time spent: **20** hours spent in total
 
 ## Twitter Client Part 2
 
-Time spent: **6** hours spent in total
+Time spent: **8** hours spent in total
 
 ### User Stories
 
