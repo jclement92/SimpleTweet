@@ -5,9 +5,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -137,18 +139,18 @@ public class TimelineActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (item.getItemId() == R.id.compose) {
-//            // Compose icon has been selected
-//            Toast.makeText(this, "Compose!", Toast.LENGTH_SHORT).show();
-//            // Navigate to the compose activity
-//            Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
-//            startActivityForResult(intent, REQUEST_CODE);
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.compose) {
+            // Compose icon has been selected
+            Toast.makeText(this, "Compose!", Toast.LENGTH_SHORT).show();
+            // Navigate to the compose activity
+            Intent intent = new Intent(TimelineActivity.this, ComposeActivity.class);
+            startActivityForResult(intent, REQUEST_CODE);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -210,8 +212,6 @@ public class TimelineActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Log.i(TAG, "Saving data into the database");
-
-
                             // Insert users first
                             List<User> usersFromNetwork = User.fromJsonTweetArray(tweetsFromNetwork);
                             tweetDao.insertModel(usersFromNetwork.toArray(new User[0]));
