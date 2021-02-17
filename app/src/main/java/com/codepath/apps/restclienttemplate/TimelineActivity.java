@@ -165,10 +165,7 @@ public class TimelineActivity extends AppCompatActivity {
             // Update the adapter
             adapter.notifyItemInserted(0);
             rvTweets.smoothScrollToPosition(0);
-
         }
-
-
     }
 
     private void loadMoreData() {

@@ -110,6 +110,20 @@ public class ComposeActivity extends AppCompatActivity {
             }
         });
 
+        BufferedReader input;
+        try {
+            input = new BufferedReader(new InputStreamReader(openFileInput("filename.txt")));
+            String line;
+            StringBuilder builder = new StringBuilder();
+            while ((line = input.readLine()) != null) {
+                builder.append(line).append("\n");
+            }
+            String text = builder.toString();
+            etCompose.setText(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // Get intent, action and MIME type
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -123,20 +137,6 @@ public class ComposeActivity extends AppCompatActivity {
 
                 etCompose.setText(urlOfPage);
             }
-        }
-
-        BufferedReader input;
-        try {
-            input = new BufferedReader(new InputStreamReader(openFileInput("filename.txt")));
-            String line;
-            StringBuilder builder = new StringBuilder();
-            while ((line = input.readLine()) != null) {
-                builder.append(line).append("\n");
-            }
-            String text = builder.toString();
-            etCompose.setText(text);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
