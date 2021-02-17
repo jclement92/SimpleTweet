@@ -32,8 +32,7 @@ The following **optional** features are implemented:
 - [X] Enable your app to receive implicit intents from other apps. When a link is shared from a web browser, it should pre-fill the text and title of the web page when composing a tweet. 
 
 The following **additional** features are implemented:
-
-- [ ] List anything else that you can get done to improve the app functionality!
+- [X] Tweet button is enabled/disabled depending on ComposeActivity EditText content
 
 ## Twitter Client Part 1
 
@@ -62,7 +61,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [X] Tweet button is enabled/disabled depending on ComposeActivity EditText content
+- [ ] List anything else that you can get done to improve the app functionality!
 
 ### Video Walkthrough
 
